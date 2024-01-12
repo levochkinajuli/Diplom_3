@@ -1,29 +1,29 @@
 import allure
-import string
-import random
+from locators import ResetPasswordLocators
 from pages.base_page import BasePage
+from urls import Urls
 
 
 class PassRecoveryPage(BasePage):
 
     @allure.step('Переходим по кнопке «Восстаносить пароль»')
-    def go_to_page_recover_pass(self, locator1, locator2):
-        self.click_to_element(locator1)
-        self.click_to_element(locator2)
+    def go_to_page_recover_pass(self):
+        self.driver.get(Urls.LOGIN_URL)
+        self.click_to_element(ResetPasswordLocators.BUTT_REST_PASS)
 
     @allure.step('Ввод почты и клик по кнопке «Восстановить»')
-    def enter_email(self, locator1, locator2):
-        def generate_random_string(length):
-            letters = string.ascii_lowercase
-            random_string = ''.join(random.choice(letters) for i in range(length))
-            return random_string
-        email = f'{generate_random_string(5)}@ya.ru'
-        element = self.find_element(locator1)
-        element.send_keys(email)
-        self.click_to_element(locator2)
+    def enter_email(self):
+        self.go_to_page_recover_pass()
+        element = self.find_element(ResetPasswordLocators.EMAIL)
+        element.send_keys('12345jjll@ya.ru')
+        self.click_to_element(ResetPasswordLocators.BUTT_REST)
+        return self.get_text(ResetPasswordLocators.FIELD_PASS_REST)
 
     @allure.step('Проверяем, активно ли окошко ввода пароля при клике по кнопке показать/скрыть пароль')
-    def pass_field_active(self, locator):
-        password_input = self.find_element(locator)
-        return password_input.get_attribute('type')
-
+    def pass_field_active(self):
+        self.go_to_page_recover_pass()
+        element = self.find_element(ResetPasswordLocators.EMAIL)
+        element.send_keys('12345jjll@ya.ru')
+        self.click_to_element(ResetPasswordLocators.BUTT_REST)
+        self.click_to_element(ResetPasswordLocators.EYE)
+        return self.find_element(ResetPasswordLocators.INPUT_PASS_FOCUSED)

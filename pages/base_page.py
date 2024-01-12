@@ -9,7 +9,7 @@ class BasePage:
         self.driver = driver
 
     def find_element(self, locator):
-        return WebDriverWait(self.driver, 3).until(
+        return WebDriverWait(self.driver, 4).until(
             expected_conditions.visibility_of_element_located(locator))
 
     def click_to_element(self, locator):
@@ -25,3 +25,7 @@ class BasePage:
         target_element = self.find_element(locator2)
         actions = ActionChains(self.driver)
         actions.click_and_hold(source_element).move_to_element(target_element).release().perform()
+
+    def not_displayed(self, locator):
+        return WebDriverWait(self.driver, 3).until(expected_conditions.invisibility_of_element_located(locator))
+
