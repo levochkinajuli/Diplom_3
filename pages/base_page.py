@@ -29,3 +29,5 @@ class BasePage:
     def not_displayed(self, locator):
         return WebDriverWait(self.driver, 3).until(expected_conditions.invisibility_of_element_located(locator))
 
+    def is_displayed(self, locator):
+        return WebDriverWait(self.driver, 5).until(expected_conditions.presence_of_element_located(locator))

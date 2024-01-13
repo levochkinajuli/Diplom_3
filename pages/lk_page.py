@@ -1,7 +1,6 @@
 import allure
 from locators import LKLocators
 from pages.base_page import BasePage
-from urls import Urls
 
 
 class PersonalAccountPage(BasePage):
@@ -21,6 +20,5 @@ class PersonalAccountPage(BasePage):
     def logout(self):
         self.click_to_element(LKLocators.BUTT_LK)
         self.click_to_element(LKLocators.BUTT_EXIT)
-        element = self.find_element(LKLocators.BUTT_ENTER_LK)
-        return element.text
-
+        element = self.get_text(LKLocators.BUTT_ENTER_LK)
+        return element

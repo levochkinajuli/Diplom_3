@@ -1,7 +1,6 @@
-import allure
-from selenium.webdriver.support import expected_conditions
-from selenium.webdriver.support.wait import WebDriverWait
+import time
 
+import allure
 from locators import MainPageLocators
 from pages.base_page import BasePage
 from urls import Urls
@@ -47,7 +46,7 @@ class MainPage(BasePage):
     @allure.step('Нажимаем на кнопку "Оформить заказ"')
     def to_order(self):
         self.click_to_element(MainPageLocators.BUTT_TO_ORDER)
-        return self.find_element(MainPageLocators.ORDER_ID)
+        return self.is_displayed(MainPageLocators.ORDER_ID)
 
     @allure.step('Перетаскиваем соус для заказа')
     def drag_sauce(self):
@@ -81,10 +80,9 @@ class MainPage(BasePage):
         self.to_close_order()
         return element
 
-    @allure.step('Оформляем заказ и закрываем его')
+    @allure.step('Оформляем заказ, закрываем его, переходим в заказы')
     def make_order_and_close(self):
-        self.driver.get(Urls.MAIN_PAGE_URL)
-        WebDriverWait(self.driver, 5).until(
-            expected_conditions.visibility_of_element_located(MainPageLocators.BUTT_CONS))
+        self.click_to_element(MainPageLocators.BUTT_CONS)
         self.make_order()
         self.to_close_order()
+

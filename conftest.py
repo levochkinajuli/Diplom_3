@@ -1,9 +1,9 @@
 import pytest
-from selenium import webdriver
-from locators import MainPageLocators, LoginPageLocators
 import string
 import random
 import requests
+from selenium import webdriver
+from pages.login_page import LoginPage
 
 
 @pytest.fixture
@@ -40,15 +40,9 @@ def user():
 
 @pytest.fixture
 def browser_with_user(browser, user):
-    browser.get('https://stellarburgers.nomoreparties.site/')
-    data = user
-    email = data["email"]
-    password = data["password"]
-    browser.find_element(*MainPageLocators.BUTT_ENTER_MAIN).click()
-    browser.find_element(*LoginPageLocators.FIELD_EMAIL).send_keys(email)
-    browser.find_element(*LoginPageLocators.FIELD_PASSWORD).send_keys(password)
-    browser.find_element(*LoginPageLocators.BUTT_ENTER).click()
+    email = user["email"]
+    password = user["password"]
 
-    yield browser
+    LoginPage(browser).login(email, password)
 
-    browser.quit()
+    return browser
